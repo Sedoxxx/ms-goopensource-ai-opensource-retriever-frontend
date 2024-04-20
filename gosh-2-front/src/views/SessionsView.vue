@@ -1,63 +1,91 @@
 <template>
-    <div class="sessions-container flex justify-content-center flex-column align-content-center">
+  <div class="sessions-container flex justify-content-center flex-column align-content-center">
+    <div class="flex flex-column justify-content-center align-items-center gap-1">
+      <header class="sessions-header">
+        <h1>Sessions</h1>
+        <Button @click="createSession" class="create-session-button">Create Session</Button>
+        <div class="search-bar">
+          <input
+            type="text"
+            v-model="searchQuery"
+            placeholder="Search for a previous session..."
+            class="search-input"          />
+          <button @click="fetchSessions" class="search-button">Refresh</button>
+        </div>
+      </header>
+      <div
+        v-for="(session, index) in sessions"
+        :key="session.id"
+        class="session-rectangle flex flex-row justify-content-between gap-0 "
+        @click="navigateToSession(session.id)"
 
-        <div class="flex flex-column justify-content-center align-items-center gap-1">
-            <header class="sessions-header">
-            <h1>Sessions</h1>
-                <div class="search-bar">
-                <input
-                    type="text"
-                    v-model="searchQuery"
-                    placeholder="Search for a previous session..."
-                    class="search-input"
-                />
-                <button @click="makeQuery" class="search-button">Search</button>
-                </div>
-        </header>
-        <div
-            v-for="(session, index) in sessions"
-            :key="index"
-            class="session-rectangle flex flex-row justify-content-between gap-0 "
-            :class="{ 'hovered': selectedIndex === index }"
-            @click="selectSession(index)"
-        >
-            <span class=" font-medium text-xl">SESSION {{ index + 1 }}</span>
-            <div>
-              <i color="#fbbf24" class="pi pi-plus mr-2"></i> 
-                <span class="mr-5">Created at: 20-04-2024</span>
-                <i color="#fbbf24" class="pi pi-clock mr-2 mb-1"></i> 
-                <span>Last Accessed: 20-04-2024</span>
-            </div>
+      >
+        <span class="font-medium text-xl">SESSION {{ session.id }}</span>
+        <div>
+          <i color="#fbbf24" class="pi pi-plus mr-2"></i> 
+          <span class="mr-5">Created at: {{ new Date(session.created_at).toLocaleDateString() }}</span>
+          <i color="#fbbf24" class="pi pi-clock mr-2 mb-1"></i> 
+          <span>Last Accessed: {{ new Date(session.last_accessed).toLocaleDateString() }}</span>
         </div>
-        </div>
+      </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        sessions: ['Session 1', 'Session 2', 'Session 3','Session 1', 'Session 2', 'Session 3','Session 1', 'Session 2', 'Session 3'],
-        cards: [
-           {
-            name: "Session 1",
-            lastAccessed: "23 february",
-            created_at: "19 february",
-           },
+  </div>
+</template>
 
+<script>
+import axios from 'axios';
 
-        ], // example session data
-        selectedIndex: null // initially no session is selected
-      };
+export default {
+  data() {
+    return {
+      sessions: [],
+      selectedIndex: null, // initially no session is selected
+      searchQuery: ''
+    };
+  },
+  created() {
+    this.fetchSessions();
+  },
+  // mounted() {
+  //   this.fetchSessions();
+  // },
+  methods: {
+    fetchSessions() {
+      axios.get('http://188.130.155.83:8000/sessions')
+        .then(response => {
+          this.sessions = response.data;
+          console.log(JSON.stringify(this.sessions))
+        })
+        .catch(error => {
+          console.error('There was an error fetching the sessions:', error);
+        });
     },
-    methods: {
-      selectSession(index) {
-        // toggle selection
-        this.selectedIndex = this.selectedIndex === index ? null : index;
-      }
+    createSession() {
+      // Example of data you might want to send
+      const sessionData = {
+        name: 'New Session',
+        created_at: new Date().toISOString(),
+        last_accessed: new Date().toISOString(),
+      };
+      axios.post('http://188.130.155.83:8000/sessions', sessionData)
+        .then(response => {
+          this.sessions.push(response.data); // Add the new session to the list
+          console.log('Session created:', response.data);
+        })
+        .catch(error => {
+          console.error('Error creating session:', error);
+        });
+    },
+    selectSession(index) {
+      this.selectedIndex = this.selectedIndex === index ? null : index;
+    },
+    navigateToSession(id) {
+      this.$router.push(`/app/${id}`);
     }
-  };
-  </script>
+  }
+};
+</script>
+
   
   <style>
   .session-rectangle {

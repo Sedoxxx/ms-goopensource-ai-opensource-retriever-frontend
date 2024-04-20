@@ -17,6 +17,11 @@ const router = createRouter({
       component: ShowcaseView
     },
     {
+      path: '/session/:id',
+      name: 'session',
+      component: ShowcaseView
+    },
+    {
       path: '/sessions',
       name: 'sessions',
       component: SessionsView
