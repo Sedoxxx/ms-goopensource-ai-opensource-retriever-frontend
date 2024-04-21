@@ -86,7 +86,7 @@ export default {
     sendFilterRequest() {
       console.log("hello")
       const queryParams = this.generateQueryParams();
-      const url = `http://91.107.124.108:5173/v1/search?${queryParams.toString()}`;
+      const url = `   v1/search?${queryParams.toString()}`;
       console.log(url);
       this.$emit('loading');
       

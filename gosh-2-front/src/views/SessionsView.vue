@@ -114,7 +114,7 @@ export default {
 </script>
 
   
-  <style>
+  <style scoped>
   .session-rectangle {
     width: 60vw;
     height: 15px;

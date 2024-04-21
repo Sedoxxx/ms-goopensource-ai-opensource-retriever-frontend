@@ -9,10 +9,10 @@
       <button @click="rightAction">→</button> -->
 
       <div>
-        <Button class="button-input" icon="pi pi-arrow-left" aria-label="Submit" />
-        <Button class="button-input" icon="pi pi-arrow-right" aria-label="Submit" />
+        <Button @click="leftAction" class="button-input" icon="pi pi-arrow-left" aria-label="Submit" />
+        <Button @click="rightAction" class="button-input" icon="pi pi-arrow-right" aria-label="Submit" />
         <!-- <Button class="button-input" icon="pi pi-sliders-v" aria-label="Submit" /> -->
-        <SiderBar ref="sidebar" @loading="toggleLoading" @fetched="handleFetchedCatalog" :searchQuery="this.searchQuery"></SiderBar>
+        <SiderBar ref="sidebar" @loading="toggleLoading" @fetched="handleFetchedCatalog" :searchQuery="searchQuery"></SiderBar>
       </div>
     </div>
   </template>
@@ -30,11 +30,13 @@ export default {
     },
     props: {
         session_id: Number,
+        pageNumber: Number,
+        // searchQuery: String
     },
    data() {
     return {
       userInput: '',
-      searchQuery: "Search for the Open Source Project You Desire !",
+      searchQuery: 'HI TEST TEST TEST'
     };
   },
   methods: {
@@ -44,7 +46,6 @@ export default {
       axios.post('http://188.130.155.83:8000/prompts', {
         session_id: this.session_id, 
         prompt_text: this.searchQuery,
-        position: 0,
         created_at: new Date().toISOString(),
         last_accessed: new Date().toISOString(),
     })
@@ -59,10 +60,12 @@ export default {
     },
     leftAction() {
       console.log('Left action performed');
+      this.$emit('leftAction')
 
     },
     rightAction() {
-      console.log('Right action performed');
+      console.log('rightAction');
+      this.$emit('rightAction')
     }
   }
 }
