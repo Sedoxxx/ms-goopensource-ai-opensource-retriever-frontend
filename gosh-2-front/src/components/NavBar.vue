@@ -49,7 +49,7 @@ export default {
                 {
                     label: 'Home',
                     icon: 'pi pi-home',
-                    to: '/app'
+                    to: '/'
                 },
                 {
                     label: 'Sessions',

@@ -214,7 +214,7 @@ export default {
 .catalog-card {
     margin-right: 10px;
     margin-bottom: 10px;
-    margin-left:3 px;
+    margin-left: 3px;
 }
 .surface-border { 
     height: 600px;
