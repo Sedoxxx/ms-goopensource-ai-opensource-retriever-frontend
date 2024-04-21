@@ -5,7 +5,8 @@
         <Dialog v-model:visible="visible" modal :style="{ width: '40%' }">
             <div class="flex flex-row justify-content-center">
                 <div class="repo-image-container flex justify-content-center mb-5">
-                    <img src="https://www.icegif.com/wp-content/uploads/2022/09/icegif-386.gif" alt="">
+                    <img :src="selectedGif" alt="Repo-Image">
+                    <!-- <img src="https://www.icegif.com/wp-content/uploads/2022/09/icegif-386.gif" alt=""> -->
                 </div>
             </div>
             <div class="p-grid p-fluid dialog-content ml-2">
@@ -144,8 +145,9 @@
 
             <!-- <ContainerOfContributors></ContainerOfContributors> -->
             <template #footer>
+                <DialogContributors></DialogContributors>
                 <Button label="Go to Repo" class="w-10rem " icon="pi pi-external-link" @click="goToRepo" />
-                <Button label="Fork" class="w-8rem " severity="success" icon="pi pi-share-alt" @click="goToRepo" />
+                <Button label="Fork" class="w-8rem " severity="success" icon="pi pi-share-alt" @click="goToFork" />
                 <Button label="Close" text severity="secondary" @click="visible = false" autofocus />
             </template>
         </Dialog>
@@ -154,50 +156,55 @@
 
 <script>
 import ContainerOfContributors from '@/components/Catalog/ContainerOfContributors.vue';
+import DialogContributors from './DialogContributors.vue';
 
 export default {
     expose: ['toggleVisibility'],
     components: {
-        ContainerOfContributors
+        ContainerOfContributors,
+        DialogContributors
     },
-    data() {
-        return {
-            visible: false,
-            name: "example",
-            full_name: "Example Repository",
-            private: false,
-            owner_name: "John Doe",
-            owner_avatar_url: "https://example.com/avatar.jpg",
-            repo_html_url: "https://github.com/example",
-            repo_api_url: "https://api.github.com/repos/example",
-            short_description: 
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet bibendum enim facilisis gravida. Pharetra magna ac placerat vestibulum lectus mauris ultrices eros. Cum sociis natoque penatibus et magnis dis parturient montes. Neque convallis a cras semper auctor neque vitae. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet bibendum enim facilisis gravida. Pharetra magna ac placerat vestibulum lectus mauris ultrices eros. Cum sociis natoque penatibus et magnis dis parturient montes. Neque convallis a cras semper auctor neque vitae.",
-            fork: false,
-            number_of_forks: 0,
-            number_of_stars: 10,
-            number_of_watchers: 5,
-            number_of_collaborators: 3,
-            number_of_contributors: 7,
-            number_of_branches: 2,
-            number_of_tags: 3,
-            number_of_pulls: 5,
-            number_of_commits: 100,
-            number_of_downloads: 1000,
-            number_of_issues: 20,
-            languages: "JavaScript,HTML,CSS",
-            created_at: "2022-04-20",
-            updated_at: "2024-04-20",
-            pushed_at: "2024-04-20",
-            size: 1024,
-            license_key: "MIT",
-            license_name: "MIT License",
-            license_url: "https://opensource.org/licenses/MIT",
-            license_spdx_id: "MIT",
-            topics: "example, sample, repository",
-            visibility: "Public",
-            archived: false,
-            default_branch: "main",
-        };
+    props: {
+        repositoryData: Object,
+        selectedGif: String
+    },
+    data(){
+    return {
+        visible: false,
+        name: this.repositoryData.name,
+        full_name: this.repositoryData.full_name,
+        private: this.repositoryData.private,
+        owner_name: this.repositoryData.owner_name,
+        owner_avatar_url: this.repositoryData.owner_avatar_url,
+        repo_html_url: this.repositoryData.repo_html_url,
+        repo_api_url: this.repositoryData.repo_api_url,
+        short_description: this.repositoryData.short_description,
+        fork: this.repositoryData.fork,
+        number_of_forks: this.repositoryData.number_of_forks,
+        number_of_stars: this.repositoryData.number_of_stars,
+        number_of_watchers: this.repositoryData.number_of_watchers,
+        number_of_collaborators: this.repositoryData.number_of_collaborators,
+        number_of_contributors: this.repositoryData.number_of_contributors,
+        number_of_branches: this.repositoryData.number_of_branches,
+        number_of_tags: this.repositoryData.number_of_tags,
+        number_of_pulls: this.repositoryData.number_of_pulls,
+        number_of_commits: this.repositoryData.number_of_commits,
+        number_of_downloads: this.repositoryData.number_of_downloads,
+        number_of_issues: this.repositoryData.number_of_issues,
+        languages: this.repositoryData.languages,
+        created_at: this.repositoryData.created_at,
+        updated_at: this.repositoryData.updated_at,
+        pushed_at: this.repositoryData.pushed_at,
+        size: this.repositoryData.size,
+        license_key: this.repositoryData.license_key,
+        license_name: this.repositoryData.license_name,
+        license_url: this.repositoryData.license_url,
+        license_spdx_id: this.repositoryData.license_spdx_id,
+        topics: this.repositoryData.topics,
+        visibility: this.repositoryData.visibility,
+        archived: this.repositoryData.archived,
+        default_branch: this.repositoryData.default_branch,
+    };
     },
     computed: {
     languageList() {
@@ -205,6 +212,12 @@ export default {
     }
     },
     methods:{
+        goToRepo(){
+            window.location.href="https://github.com/meta-llama/llama3"
+        },
+        goToFork(){
+            window.location.href="https://github.com/meta-llama/llama3/fork"
+        },
         toggleVisibility(){
             console.log("hello");
             this.visible = true;
@@ -248,7 +261,7 @@ export default {
     position: absolute; /* Position the image absolutely */
     top: 50%; /* Align the top edge of the image with the middle of the container */
     left: 50%; /* Align the left edge of the image with the middle of the container */
-    transform: scale(1) translate(-50%, -50%); /* Center the image */
+    transform: scale(1.5) translate(-35%, -40%); /* Center the image */
     min-width: auto; /* Ensure the image covers the container */
     min-height: auto; /* Ensure the image covers the container */
 }

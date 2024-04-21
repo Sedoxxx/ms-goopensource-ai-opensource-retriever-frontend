@@ -64,7 +64,7 @@
   position: inline-block;
   right: 0;
   bottom: 0;
-  z-index: 1000;
+
   width: 100%;
   /* display: none;*/
   display: flex;
@@ -138,7 +138,6 @@ hr {
     position: inline-block;
     right: 0;
     bottom: 0;
-    z-index: 1000;
     width: 100%;
     background-color: #06b6d4;
    /* display: none;*/

@@ -1,9 +1,15 @@
 <template>
   <div class="sessions-container flex justify-content-center flex-column align-content-center">
     <div class="flex flex-column justify-content-center align-items-center gap-1">
-      <header class="sessions-header">
-        <h1>Sessions</h1>
-        <Button @click="createSession" class="create-session-button">Create Session</Button>
+      <header class="sessions-header flex flex-column">
+        <div class="mb-5 flex">
+          <div class="logo-container">
+              <img src="@/assets/public/small-logo-gos.png" class="nav-logo" alt="gos-log">
+          </div>
+          <h1 class="sessions-header-title">GOShowcase Sessions</h1>
+        </div>
+        <div class="flex">
+        <Button @click="createSession" class="create-session-button mr-2">Create a new Session</Button>
         <div class="search-bar">
           <input
             type="text"
@@ -12,15 +18,22 @@
             class="search-input"          />
           <button @click="fetchSessions" class="search-button">Refresh</button>
         </div>
+        </div>
+
       </header>
-      <div
+      <div class="session-card-div">
+        <div
         v-for="(session, index) in sessions"
         :key="session.id"
         class="session-rectangle flex flex-row justify-content-between gap-0 "
         @click="navigateToSession(session.id)"
 
       >
-        <span class="font-medium text-xl">SESSION {{ session.id }}</span>
+        <div>
+        <span class="font-medium text-xl mr-3">SESSION {{ session.id }}</span>
+        <i color="#000000" class="pi pi-sparkles icon-input"></i> 
+        </div>
+
         <div>
           <i color="#fbbf24" class="pi pi-plus mr-2"></i> 
           <span class="mr-5">Created at: {{ new Date(session.created_at).toLocaleDateString() }}</span>
@@ -28,6 +41,9 @@
           <span>Last Accessed: {{ new Date(session.last_accessed).toLocaleDateString() }}</span>
         </div>
       </div>
+
+      </div>
+
     </div>
   </div>
 </template>
@@ -80,7 +96,7 @@ export default {
       this.selectedIndex = this.selectedIndex === index ? null : index;
     },
     navigateToSession(id) {
-      this.$router.push(`/app/${id}`);
+      this.$router.push(`/session/${id}`);
     }
   }
 };
@@ -104,6 +120,9 @@ export default {
     border-radius: 0px;
     transition: all 0.3s ease;
   }
+  .session-rectangle span {
+    font-family: IBM Plex Mono;
+  }
   .sessions-header {
     width: 70vw;
     display: flex;
@@ -111,13 +130,31 @@ export default {
     align-items: center;
     margin-top: 20px;
     margin-bottom: 20px;
+
   }
-  .sessions-header > h1 {
-    color: Black;
-    font-family: Raleway;
-    font-weight: bold;
-    font-size: 30px;
+  .create-session-button{
+    border-radius: 30px;
+    font-family: IBM Plex Mono;
   }
+  .sessions-header-title {
+    font-family: "IBM Plex Mono", sans-serif;
+    color: black;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-size: 35px;
+    font-style: normal;
+  
+  }
+
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nav-logo {
+    height: 60px;
+    width: 60px;
+}
   .session-rectangle:hover {
     background: transparent;
     color: rgba(0, 0, 0, 0.85) !important;
@@ -164,9 +201,10 @@ export default {
     position: absolute;
     top: 51%;
     right: 3px; /* Adjust as needed */
-    transform: translateY(-50%);
-    padding: 9px 22px;
+    transform: translateY(-49%);
+    padding: 8px 23px;
     text-align: center;
+    font-family: IBM Plex Mono;
     border: 2px solid #06b6d4;
     border-radius: 30px;
     background-color: #06b6d4; /* Adjust the button background color if needed */

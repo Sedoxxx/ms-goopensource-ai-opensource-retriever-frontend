@@ -1,10 +1,13 @@
 <template>
     <div class="projects-catalog">
       <div class="container_filtering_projects">
-        <div class="container_search_products">
-          <header class="projects-header">
-            <h1>Showcase Repositories</h1>
-            <div class="search-bar">
+        <div class="container_search_products ">
+          <header class="projects-header flex justify-content-center">
+            <div class="logo-container">
+                    <img src="@/assets/public/small-logo-gos.png" class="nav-logo" alt="gos-log">
+            </div>
+            <h1>GOShowcase Repositories</h1>
+            <!-- <div class="search-bar">
               <input
                 type="text"
                 v-model="searchQuery"
@@ -12,18 +15,19 @@
                 class="search-input"
               />
               <button @click="makeQuery" class="search-button">Search</button>
-            </div>
+            </div> -->
           </header>
           <section v-if="loading === false" class="product-list product-grid">
             <CatalogCard
               v-for="product in products"
+              :repositoryData="product"
               :key="product"
               :repositoryName="product.repositoryName"
-      :forks = "product.forks"
-      :stars =  "product.stars"
-      :description = "product.description"
-      :avatarURL= "product.avatarURL"
-      :contributorAccount="product.contributorAccount" 
+              :forks = "product.forks"
+              :stars =  "product.stars"
+              :description = "product.description"
+              :avatarURL= "product.avatarURL"
+              :contributorAccount="product.contributorAccount" 
             ></CatalogCard>
   
             <div class="no-products-container" v-if="filteredProducts.length === 0">
@@ -38,24 +42,34 @@
   
           <Paginator :rows="10" :totalRecords="120" :rowsPerPageOptions="[10, 20, 30]"></Paginator>
         </div>
-        <SiderBar ref="sidebar" @loading="toggleLoading" @fetched="handleFetchedCatalog" :searchQuery="this.searchQuery"></SiderBar>
+        <!-- <SiderBar ref="sidebar" @loading="toggleLoading" @fetched="handleFetchedCatalog" :searchQuery="this.searchQuery"></SiderBar> -->
       </div>
+      <InputArea @loading="toggleLoading" ref="inputArea" :session_id="sessionId"></InputArea>
     </div>
   </template>
   
   <script>
+  import axios from 'axios';
+
   import CatalogCard from '@/components/Catalog/CatalogCard.vue'
   import SiderBar from '@/components/Catalog/SiderBar.vue'
+  import InputArea from '../components/Catalog/InputArea.vue';
+
   import { ref, defineExpose } from 'vue'
+
   export default {
     components: {
       CatalogCard,
-      SiderBar
+      SiderBar,
+      InputArea
     },
     data() {
       return {
+  
         totalRecords : Number, 
         rows : Number,
+        sessionId: this.$route.params.id,
+        promptId: 8,        
         loading: false,
   
   
@@ -117,93 +131,27 @@
             description: "analyzes for bugs, suggests improvements, ensuring flawless, efficient projects—your code's best friend!",
             contributorAccount: "Aymen Daassi" 
           }
-        //   {
-        //     id: 1,
-        //     big_title: 'Code QA',
-        //     small_title: 'Code Understanding AI',
-        //     description:
-        //       "Boost your coding experience: Code Expert LLM analyzes for bugs, suggests improvements, ensuring flawless, efficient projects—your code's best friend!",
-        //     features: [
-        //       'Ensuring smooth projects: Keep projects running smoothly with efficient issue resolution.',
-        //       'Identifying problems: Find and fix bugs and code standard violations.',
-        //       'Suggesting improvements: Offer valuable tips for code readability and efficiency.',
-        //       'Suggesting improvements: Offer valuable tips for code readability and efficiency.'
-        //     ],
-        //     primary_color: '#308FFE',
-        //     secondary_color: '#B0E3FF'
-        //   },
-        //   {
-        //     id: 2,
-        //     big_title: 'IU Code generator',
-        //     small_title: 'YOUR CODING ASSISTANT',
-        //     description:
-        //       "Boost your coding experience: Code Expert LLM analyzes for bugs, suggests improvements, ensuring flawless, efficient projects—your code's best friend!",
-        //     features: [
-        //       'Ensuring smooth projects: Keep projects running smoothly with efficient issue resolution.',
-        //       'Identifying problems: Find and fix bugs and code standard violations.',
-        //       'Suggesting improvements: Offer valuable tips for code readability and efficiency.',
-        //       'Suggesting improvements: Offer valuable tips for code readability and efficiency.'
-        //     ],
-        //     primary_color: '#8FE036',
-        //     secondary_color: '#DAFFB1'
-        //   },
-        //   {
-        //     id: 3,
-        //     big_title: 'Beluga LLM',
-        //     small_title: 'YOUR NEW FRIEND',
-        //     description:
-        //       "Boost your coding experience: Code Expert LLM analyzes for bugs, suggests improvements, ensuring flawless, efficient projects—your code's best friend!",
-        //     features: [
-        //       'Ensuring smooth projects: Keep projects running smoothly with efficient issue resolution.',
-        //       'Identifying problems: Find and fix bugs and code standard violations.',
-        //       'Suggesting improvements: Offer valuable tips for code readability and efficiency.',
-        //       'Suggesting improvements: Offer valuable tips for code readability and efficiency.'
-        //     ],
-        //     primary_color: '#8A2FE3',
-        //     secondary_color: '#BBB0FF'
-        //   },
-        //   {
-        //     id: 4,
-        //     big_title: 'Method Messages',
-        //     small_title: 'Enhances code documentation',
-        //     description:
-        //       "Boost your coding experience: Code Expert LLM analyzes for bugs, suggests improvements, ensuring flawless, efficient projects—your code's best friend!",
-        //     features: [
-        //       'Ensuring smooth projects: Keep projects running smoothly with efficient issue resolution.',
-        //       'Identifying problems: Find and fix bugs and code standard violations.',
-        //       'Suggesting improvements: Offer valuable tips for code readability and efficiency.',
-        //       'Suggesting improvements: Offer valuable tips for code readability and efficiency.'
-        //     ],
-        //     primary_color: '#FF8811',
-        //     secondary_color: '#FFDCB9'
-        //   }
+
         ],
         filteredProducts: [],
         cataloging: [],
         searchQuery: ''
       }
     },
+    mounted(){
+      this.fetchData();
+    },
     created() {
-      // Initialize filteredProducts with all products on creation
       this.filteredProducts = this.products
     },
-  //   watch: {
-  //     searchQuery(newVal, oldVal) {
-  //       this.performSearch()
-  //     }
-  //   },
-  
+
     methods: {
       handleFetchedCatalog(productCatalog) {
-        // Update the catalog data property with the emitted data
         this.cataloging = productCatalog;
-        console.log("hlllll")
         console.log(JSON.stringify(this.cataloging))
-        console.log("dffcf")
-  
       },
       toggleLoading(){
-          console.log("loooad")
+          console.log("loading")
           this.loading = !this.loading
       },
       performSearch() {
@@ -214,26 +162,42 @@
               product.small_title.toLowerCase().includes(this.searchQuery.toLowerCase())
           )
         } else {
-          // If search query is empty, show all products
           this.filteredProducts = this.products
-        }},
+      }},
       
       makeQuery() {
           console.log("yes")
           this.$refs.sidebar.sendFilterRequest();
-          
-          // this.$refs.sidebar.sendFilterRequest;
       },
-      async fetchData() {
-              try {
-                  const response = await Axios.get(`http://91.107.124.108:5173/v1/home/star?limit=${this.limit}&page=${this.currentPage}`);
-                  this.products = response.data; // Adjust based on your actual response structure
-                  this.currentPage++;
-              } catch (error) {
-                  console.error("Error fetching products:", error);
-                  // Handle error (e.g., show error message)
-              }
+      fetchData() {
+        const sessionId = this.$route.params.id; // Get session ID from route parameters
+        const promptId = this.promptId; // Get prompt ID from component data
+        this.loading = true;
+        console.log(sessionId," ",promptId);
+
+        axios.get(`http://188.130.155.83:8000/repos/${sessionId}/${promptId}`)
+          .then(response => {
+            console.log(JSON.stringify(response.data));
+            this.products = response.data;
+            this.filteredProducts = response.data; 
+            // Assuming you want to initialize filtered products too
+            this.loading = false;
+          })
+          .catch(error => {
+            console.error('Error fetching repositories:', error);
+            this.loading = false;
+          });
       },
+      // async fetchData() {
+      //         try {
+      //             const response = await Axios.get(`http://91.107.124.108:5173/v1/home/star?limit=${this.limit}&page=${this.currentPage}`);
+      //             this.products = response.data; // Adjust based on your actual response structure
+      //             this.currentPage++;
+      //         } catch (error) {
+      //             console.error("Error fetching products:", error);
+      //             // Handle error (e.g., show error message)
+      //         }
+      // },
     }
   }
   </script>
@@ -248,6 +212,16 @@
       align-items: center;
   
   }
+
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nav-logo {
+    height: 60px;
+    width: 60px;
+}
   
   .projects-catalog {
     width: 100%;
@@ -288,10 +262,17 @@
   }
   
   .projects-header > h1 {
-    color: Black;
-    font-family: Raleway;
-    font-weight: bold;
-    font-size: 30px;
+    /* font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-size: 35px;
+    font-style: normal;
+ */
+    font-family: "IBM Plex Mono", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-size: 35px;
+    font-style: normal;
   }
   
   .product-grid {
@@ -316,7 +297,7 @@
   }
   
   .projects-header {
-    width: 70vw;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;

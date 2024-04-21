@@ -26,11 +26,14 @@
       <InputText v-model="page" placeholder="Enter the page offset..." />
     </div>
     <Button class="mt-3" label="Apply Filter" icon="pi pi-arrow-right" name="Filtering" title="Filtering" @click="sendFilterRequest" />
-  </Sidebar> 
-  <Button icon="pi pi-arrow-right" name="Filtering" title="Filtering" @click="visible = true" />
+  </Sidebar>
+  <Button class="button-input" icon="pi pi-sliders-v" name="Filtering" title="Filtering" @click="visible = true"/>
+ 
+  <!-- <Button icon="pi pi-arrow-right" name="Filtering" title="Filtering" @click="visible = true" /> -->
 </template>
 
 <script>
+
 import Axios from 'axios';
 import { ref, defineExpose } from 'vue'
 export default {
@@ -106,6 +109,15 @@ export default {
 </script>
 
 <style scoped>
+
+.button-input{
+    width: 3.5rem;
+    height: 3.5rem;
+    background: black;
+    margin-right: 0.5rem;
+    border: none;
+}
+
 .sidebar .filter-section {
   margin-bottom: 2rem;
 }
@@ -135,10 +147,10 @@ p-sidebar-content {
     flex-direction: column;
     gap: 3rem;
 }
-button.p-button.p-component.p-button-icon-only{ 
+/* button.p-button.p-component.p-button-icon-only{ 
   width:  fit-content;
     height: fit-content;
     padding: 1rem 1.5rem;
     margin: 1.2rem 0;
-}
+} */
 </style>
