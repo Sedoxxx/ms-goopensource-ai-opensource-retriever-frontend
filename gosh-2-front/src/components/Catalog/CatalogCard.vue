@@ -135,7 +135,7 @@ export default {
     position: absolute; /* Position the image absolutely */
     top: 50%; /* Align the top edge of the image with the middle of the container */
     left: 50%; /* Align the left edge of the image with the middle of the container */
-    transform: scale(1.7) translate(-30%, -37%); /* Center the image */
+    transform: scale(2.5) translate(-30%, -37%); /* Center the image */
     min-width: auto; /* Ensure the image covers the container */
     min-height: auto; /* Ensure the image covers the container */
 }
