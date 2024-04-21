@@ -24,7 +24,7 @@
             <div class="p-col-12 flex  align-items-center">
             <h5 class="text-base font-bold">Owner: {{ owner_name }}</h5>
             <!-- <img :src="owner_avatar_url" alt="Owner Avatar" width="50" height="50"> -->
-            <Avatar image="src/assets/images/aymen_header.jpg" shape="circle" size="large" class="mr-2"/>
+            <Avatar image="src/assets/images/aymen_header.jpg" shape="circle" size="large" class="ml-2 mr-2"/>
             </div>
           </div>
         </div>
@@ -81,17 +81,17 @@
 
 <div class="flex flex-column justify-content-between w-5 mt-1">
     <div class="p-col-12 flex align-items-center">
-        <i color="#fbbf24" class="pi pi-share-alt"></i> 
+        <i color="#fbbf24" class="pi pi-share-alt mr-2"></i> 
         <h5 class="text-base font-bold">Forks:</h5>
         <p class="ml-1">{{ number_of_forks }}</p>
     </div>
     <div class="p-col-12 flex align-items-center">
-        <i color="#fbbf24" class="pi pi-star"></i> 
-        <h5 class="text-base font-bold">Stars:</h5>
+        <i color="#fbbf24" class="pi pi-star mr-2"></i> 
+        <h5 class="text-base font-bold ">Stars:</h5>
         <p class="ml-1">{{ number_of_stars }}</p>
     </div>
     <div class="p-col-12 flex align-items-center">
-        <i color="#fbbf24" class="pi pi-eye"></i> 
+        <i color="#fbbf24" class="pi pi-eye mr-2"></i> 
         <h5 class="text-base font-bold">Watchers:</h5>
         <p class="ml-1">{{ number_of_watchers }}</p>
     </div>
@@ -101,38 +101,38 @@
         <p class="ml-1">{{ number_of_collaborators }}</p>
     </div> -->
     <div class="p-col-12 flex align-items-center">
-        <i color="#fbbf24" class="pi pi-users"></i> 
+        <i color="#fbbf24" class="pi pi-users mr-2"></i> 
         <h5 class="text-base font-bold">Contributors:</h5>
         <p class="ml-1">{{ number_of_contributors }}</p>
     </div>
     <div class="p-col-12 flex align-items-center">
-        <i color="#fbbf24" class="pi pi-sitemap"></i> 
+        <i color="#fbbf24" class="pi pi-sitemap mr-2"></i> 
         <h5 class="text-base font-bold">Branches:</h5>
         <p class="ml-1">{{ number_of_branches }}</p>
     </div>
     <div class="p-col-12 flex align-items-center">
-        <i color="#fbbf24" class="pi pi-hashtag"></i> 
+        <i color="#fbbf24" class="pi pi-hashtag mr-2"></i> 
         <h5 class="text-base font-bold">Tags:</h5>
         <p class="ml-1">{{ number_of_tags }}</p>
     </div>
 
     <div class="p-col-12 flex align-items-center">
-        <i color="#fbbf24" class="pi pi-directions"></i> 
+        <i color="#fbbf24" class="pi pi-directions mr-2"></i> 
         <h5 class="text-base font-bold">Pull Requests:</h5>
         <p class="ml-1">{{ number_of_pulls }}</p>
     </div>
     <div class="p-col-12 flex align-items-center">
-        <i color="#fbbf24" class="pi pi-check"></i> 
+        <i color="#fbbf24" class="pi pi-check mr-2"></i> 
         <h5 class="text-base font-bold">Commits:</h5>
         <p class="ml-1">{{ number_of_commits }}</p>
     </div>
     <div class="p-col-12 flex align-items-center">
-        <i color="#fbbf24" class="pi pi-download"></i> 
+        <i color="#fbbf24" class="pi pi-download mr-2"></i> 
         <h5 class="text-base font-bold">Downloads:</h5>
         <p class="ml-1">{{ number_of_downloads }}</p>
     </div>
     <div class="p-col-12 flex align-items-center">
-        <i color="#fbbf24" class="pi pi-times-circle"></i> 
+        <i color="#fbbf24" class="pi pi-times-circle mr-2"></i> 
         <h5 class="text-base font-bold">Issues:</h5>
         <p class="ml-1">{{ number_of_issues }}</p>
     </div>
