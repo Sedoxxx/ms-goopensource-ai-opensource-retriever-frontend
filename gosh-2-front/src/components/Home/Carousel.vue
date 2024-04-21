@@ -3,27 +3,20 @@
     <div class="card">
         <div class="carousel-title plex-mono">  <i color="#fbbf24" class="icon-input pi pi-star-fill mr-2"></i>   TOP Repositories By Stars         <i color="#fbbf24" class="icon-input pi pi-star-fill mr-2"></i> </div>
 
-        <Carousel :value="products" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions" circular :autoplayInterval="3000">
+        <Carousel v-if=" mobile === true" :value="products" :numVisible="1" :numScroll="1" :responsiveOptions="responsiveOptions" circular :autoplayInterval="3000">
             <template  #item="slotProps">
                 <CatalogCard class="catalog-card"
               :repositoryData="slotProps.data"
               :key="slotProps.data"
             ></CatalogCard>
-                <!-- <div class="   border-1 surface-border border-round m-2  p-3">
-                    <div class="mb-3">
-                        <div class="relative mx-auto">
-                            <img :src="slotProps.data.avatarURL" :alt="slotProps.data.repositoryName" class=" image border-round" />
-                        </div>
-                    </div>
-                    <div class="BLACK mb-3 font-medium text-xl">{{slotProps.data.repositoryName}}</div>
-                    <div class="BLACK flex justify-content-between align-items-center">
-                        <div class="mt-0 font-regular text-m">{{slotProps.data.descriptions}}</div>
-                        <span>
-                            <Button icon="pi pi-heart" severity="secondary" outlined />
-                            <Button icon="pi pi-shopping-cart" class="ml-2"/>
-                        </span>
-                    </div>
-                </div> -->
+            </template>
+        </Carousel>
+        <Carousel v-else :value="products" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions" circular :autoplayInterval="3000">
+            <template  #item="slotProps">
+                <CatalogCard class="catalog-card"
+              :repositoryData="slotProps.data"
+              :key="slotProps.data"
+            ></CatalogCard>
             </template>
         </Carousel>
     </div>
@@ -38,6 +31,8 @@ export default {
     },
     data() {
         return {
+            mobile: false,
+            numVis: 3,
             products: [
                         {
                 session_id: 1,
@@ -160,7 +155,42 @@ export default {
     },async mounted() {
         await this.fetchData();
     },
+    mounted() {
+    window.scroll(0, 150);
+    if (window.innerWidth > 768) {
+      this.mobile = false;
+    }
+    else {
+      this.mobile = true
+    }
+    console.log(this.numVis)
+    // if (window.innerWidth > 1024) {
+    //   this.showHead = true;
+    // }
+    window.addEventListener('resize', this.handleResize);
+
+
+    // fetch('./code_templates.json')
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       this.codeTemplates = data;
+    //       print(JSON.stringify(data))
+    // }).catch(error => console.error("Error fetching the file"))
+    
+  },
+  beforeDestroy() {
+        window.removeEventListener('resize', this.handleResize); // Cleanup to prevent memory leaks
+    },
     methods: {
+        handleResize() {
+      if  (window.innerWidth <= 768  ) {
+        this.mobile = true;
+        this.numVis = 1
+      } else {
+        this.mobile = false;
+        this.numVis = 3
+      }
+    },
         async fetchData() {
             try {
                 const response = await Axios.get(`http://91.107.124.108:5173/v1/home/star?limit=${this.limit}&page=${this.currentPage}`);

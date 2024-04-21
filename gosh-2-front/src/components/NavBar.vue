@@ -61,6 +61,11 @@ export default {
                     icon: 'pi pi-github',
                     to: '/'
                 },
+                {
+                    label: 'TEAM G FOR THE WIN',
+                    icon: 'pi pi-hashtag',
+                    to: '/'
+                },
                 // {
                 //  label: 'Features',
                 // icon: 'pi pi-star'

@@ -1,8 +1,14 @@
 <template>
-  <div class="sessions-container flex justify-content-center flex-column align-content-center">
+  <div class="sessions-container flex justify-content-center flex-column align-content-center ">
     <div class="flex flex-column justify-content-center align-items-center gap-1">
       <header class="sessions-header flex flex-column">
-        <div class="mb-5 flex">
+        <div v-if="mobile === false" class="mb-5 flex">
+          <div class="logo-container">
+              <img src="@/assets/public/small-logo-gos.png" class="nav-logo" alt="gos-log">
+          </div>
+          <h1 class="sessions-header-title">GOShowcase Sessions</h1>
+        </div>
+        <div v-else class="mb-5 flex flex-column">
           <div class="logo-container">
               <img src="@/assets/public/small-logo-gos.png" class="nav-logo" alt="gos-log">
           </div>
@@ -10,7 +16,7 @@
         </div>
         <div class="flex">
         <Button @click="createSession" class="create-session-button mr-2">Create a new Session</Button>
-        <div class="search-bar">
+        <div v-if="mobile === false" class="search-bar">
           <input
             type="text"
             v-model="searchQuery"
@@ -33,7 +39,7 @@
         <i color="#000000" class="pi pi-sparkles icon-input"></i> 
         </div>
 
-        <div>
+        <div v-if="mobile === false">
           <i color="#fbbf24" class="pi pi-plus mr-2"></i> 
           <span class="mr-5">Created at: {{ new Date(session.created_at).toLocaleDateString() }}</span>
           <i color="#fbbf24" class="pi pi-clock mr-2 mb-1"></i> 
@@ -66,6 +72,7 @@ export default {
         },
 
       ],
+      mobile: false,
       selectedIndex: null, // initially no session is selected
       searchQuery: ''
     };
@@ -73,10 +80,36 @@ export default {
   created() {
     this.fetchSessions();
   },
-  // mounted() {
-  //   this.fetchSessions();
-  // },
+  mounted() {
+    window.scroll(0, 150);
+    if (window.innerWidth > 768) {
+      this.mobile = false;
+    }
+    else {
+      this.mobile = true
+    }
+    // if (window.innerWidth > 1024) {
+    //   this.showHead = true;
+    // }
+    window.addEventListener('resize', this.handleResize);
+
+
+    // fetch('./code_templates.json')
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       this.codeTemplates = data;
+    //       print(JSON.stringify(data))
+    // }).catch(error => console.error("Error fetching the file"))
+    
+  },
   methods: {
+    handleResize() {
+      if  (window.innerWidth <= 768  ) {
+        this.mobile = true;
+      } else {
+        this.mobile = false;
+      }
+    },
     fetchSessions() {
       axios.get('http://188.130.155.83:8000/sessions')
         .then(response => {
@@ -232,5 +265,36 @@ export default {
     background: transparent;
     color: #06b6d4;
   }
+
+  @media (max-width: 768px) {
+  .sessions-header, .sessions-container {
+    width: 95vw; /* Adjust width for smaller screens */
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .create-session-button, .search-input {
+    font-size: 12px; /* Smaller font size */
+  }
+
+  .session-rectangle {
+    width: 90vw; /* Make session bars smaller to fit mobile screens */
+    padding: 15px 10px; /* Reduce padding */
+    font-size: 14px; /* Reduce text size */
+  }
+
+  .search-input {
+    width: 100%; /* Full width for mobile */
+    padding: 10px;
+  }
+
+  .search-bar {
+    max-width: 100%;
+  }
+
+  .search-button {
+    padding: 6px 15px;
+  }
+}
   </style>
   

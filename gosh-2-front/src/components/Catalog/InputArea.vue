@@ -35,7 +35,8 @@ export default {
    data() {
     return {
       userInput: '',
-      searchQuery: "Search for the Open Source Project You Desire !" 
+    //   searchQuery: "Search for the Open Source Project You Desire !" 
+    searchQuery: ''
        };
   },
   methods: {

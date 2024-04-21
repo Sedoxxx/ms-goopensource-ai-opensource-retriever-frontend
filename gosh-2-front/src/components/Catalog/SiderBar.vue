@@ -14,16 +14,26 @@
         <Checkbox v-model="selectedFilters" inputId="forks" value="forks" />
         <label for="forks" class="ml-2"> Forks </label>
       </div>
+      <div class="flex align-items-center">
+        <Checkbox v-model="selectedFilters" inputId="forks" value="forks" />
+        <label for="forks" class="ml-2"> Downloads </label>
+      </div>
+      <div class="flex align-items-center">
+        <Checkbox v-model="selectedFilters" inputId="forks" value="forks" />
+        <label for="forks" class="ml-2"> Watchers </label>
+      </div>
   </div>
    
 
     <div class="filter-section mb-3">
       <h3>Language code: </h3>
       <InputText v-model="language" placeholder="Enter language Code..." />
-      <h3>Limit of Projects:</h3>
+      <h3>License: </h3>
+      <InputText v-model="language" placeholder="Enter language Code..." />
+      <!-- <h3>Limit of Projects:</h3>
       <InputText v-model="limit" placeholder="Enter the Limit of products..." />
       <h3>Page offset: </h3>
-      <InputText v-model="page" placeholder="Enter the page offset..." />
+      <InputText v-model="page" placeholder="Enter the page offset..." /> -->
     </div>
     <Button class="mt-3" label="Apply Filter" icon="pi pi-arrow-right" name="Filtering" title="Filtering" @click="sendFilterRequest" />
   </Sidebar>
@@ -47,6 +57,7 @@ export default {
       visible: false,
       selectedFilters: [],
       language: '',
+      license: '',
       sortOptions: [
         { name: 'Stars', value: 'stars' },
         { name: 'Forks', value: 'forks' },
