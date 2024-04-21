@@ -44,7 +44,7 @@
         </div>
         <!-- <SiderBar ref="sidebar" @loading="toggleLoading" @fetched="handleFetchedCatalog" :searchQuery="this.searchQuery"></SiderBar> -->
       </div>
-      <InputArea @leftAction="leftAction" @rightAction="rightAction" @loading="toggleLoading" ref="inputArea" :session_id="sessionId" :searchQuery="searchQuery" ></InputArea>
+      <InputArea ref="inputArea" @leftAction="leftAction" @rightAction="rightAction" @loading="toggleLoading" :session_id="sessionId" :searchQuery="searchQuery" ></InputArea>
     </div>
   </template>
   
@@ -163,7 +163,7 @@
             }
           })
           .catch(error => {
-            console.error('Error: Maybe out of bounds', error);
+            console.error('Error: Maybe out of bounds\n', error);
             this.loading = false;
           });
       },
@@ -208,6 +208,7 @@
         this.loading = true;
         console.log(sessionId," ",promptId);
         let x = `?page_size=${this.no_obj}&page_no=${this.cur_li+1}`;
+        console.log(`http://188.130.155.83:8000/repos/${sessionId}/${promptId}` + x);
         axios.get(`http://188.130.155.83:8000/repos/${sessionId}/${promptId}` + x)
           .then(response => {
             console.log(JSON.stringify(response.data));
@@ -229,9 +230,10 @@
             console.log(JSON.stringify(response.data));
             this.prompt = response.data;
             this.promptId = this.prompt.id;
+            this.$refs.inputArea.changeText(this.prompt.prompt_text);
             this.fetchData();
             console.log(prompt);
-          })
+          })  
           .catch(error => {
             console.error('Error: Maybe out of bounds', error);
             this.loading = false;
