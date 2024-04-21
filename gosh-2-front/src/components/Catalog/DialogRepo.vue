@@ -212,10 +212,10 @@ export default {
     },
     methods:{
         goToRepo(){
-            window.location.href="https://github.com/meta-llama/llama3"
+            window.location.href=this.repo_html_url
         },
         goToFork(){
-            window.location.href="https://github.com/meta-llama/llama3/fork"
+            window.location.href=this.repo_html_url+"/fork"
         },
         toggleVisibility(){
             console.log("hello");

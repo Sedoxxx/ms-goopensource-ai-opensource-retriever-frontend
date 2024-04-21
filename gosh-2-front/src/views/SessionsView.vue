@@ -40,11 +40,12 @@
         </div>
 
         <div v-if="mobile === false">
-          <i color="#fbbf24" class="pi pi-plus mr-2"></i> 
-          <span class="mr-5">Created at: {{ new Date(session.created_at).toLocaleDateString() }}</span>
-          <i color="#fbbf24" class="pi pi-clock mr-2 mb-1"></i> 
-          <span>Last Accessed: {{ new Date(session.last_accessed).toLocaleDateString() }}</span>
-        </div>
+  <i color="#fbbf24" class="pi pi-plus mr-2"></i> 
+  <span class="mr-5">Created at: {{ new Date(session.created_at).toLocaleString() }}</span>
+  <i color="#fbbf24" class="pi pi-clock mr-2 mb-1"></i> 
+  <span>Last Accessed: {{ new Date(session.last_accessed).toLocaleString() }}</span>
+</div>
+
       </div>
 
     </div>
@@ -58,18 +59,18 @@ export default {
   data() {
     return {
       sessions: [
-        {
-          id: 1,
-        },
-        {
-          id: 2,
-        },
-        {
-          id: 3,
-        },
-        {
-          id: 4,
-        },
+        // {
+        //   id: 1,
+        // },
+        // {
+        //   id: 2,
+        // },
+        // {
+        //   id: 3,
+        // },
+        // {
+        //   id: 4,
+        // },
 
       ],
       mobile: false,
