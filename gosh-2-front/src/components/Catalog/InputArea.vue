@@ -23,10 +23,9 @@ import SiderBar from '@/components/Catalog/SiderBar.vue'
 
 
 export default {
+  expose: ['changeText'],
     components: {
-
       SiderBar,
-
     },
     props: {
         session_id: Number,
@@ -36,10 +35,13 @@ export default {
    data() {
     return {
       userInput: '',
-      searchQuery: 'HI TEST TEST TEST'
-    };
+      searchQuery: "Search for the Open Source Project You Desire !" 
+       };
   },
   methods: {
+    changeText(newText){
+        this.searchQuery = newText;
+    },
     sendQuery() {
       console.log("helloooo ", this.session_id )
       this.$emit('loading');  
@@ -52,6 +54,7 @@ export default {
         .then(response => {
           console.log(response);
           this.$emit('loading');  
+          this.searchQuery = "";
         })
         .catch(error => {
           console.error(error);
