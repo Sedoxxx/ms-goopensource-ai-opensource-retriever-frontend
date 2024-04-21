@@ -24,11 +24,10 @@
             <div class="p-col-12 flex  align-items-center">
             <h5 class="text-base font-bold">Owner: {{ owner_name }}</h5>
             <!-- <img :src="owner_avatar_url" alt="Owner Avatar" width="50" height="50"> -->
-            <Avatar image="src/assets/images/aymen_header.jpg" shape="circle" size="large" class="ml-2 mr-2"/>
+            <Avatar :image="owner_avatar_url" shape="circle" size="large" class="ml-2 mr-2"/>
             </div>
           </div>
         </div>
-
 
 <div class="p-col-12 flex flex-row justify-content-between">       
 

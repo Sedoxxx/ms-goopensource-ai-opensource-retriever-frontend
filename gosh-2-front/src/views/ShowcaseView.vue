@@ -48,7 +48,7 @@
         </div>
         <!-- <SiderBar ref="sidebar" @loading="toggleLoading" @fetched="handleFetchedCatalog" :searchQuery="this.searchQuery"></SiderBar> -->
       </div>
-      <InputArea ref="inputArea" @leftAction="leftAction" @rightAction="rightAction" @loading="toggleLoading" :session_id="sessionId" :searchQuery="searchQuery" ></InputArea>
+      <InputArea ref="inputArea" @leftAction="leftAction" @rightAction="rightAction" @loading="toggleLoading" :session_id="sessionId" :searchQuery="searchQuery" @fetch="updateCatalog"></InputArea>
     </div>
   </template>
   
@@ -410,6 +410,10 @@
             this.loading = false;
           });
       },
+      updateCatalog(){
+        this.fetchData();
+        this.rightAction();
+      },
       leftAction(){
         const sessionId = parseInt(this.$route.params.id,10); // Get session ID from route parameters
         const promptId = this.promptId;
@@ -426,6 +430,7 @@
           });
       }
       ,
+
       rightAction(){
         
         const sessionId = parseInt(this.$route.params.id,10); // Get session ID from route parameters

@@ -45,7 +45,8 @@ export default {
     },
     sendQuery() {
       console.log("helloooo ", this.session_id )
-      this.$emit('loading');  
+      this.$emit('loading');
+
       axios.post('http://188.130.155.83:8000/prompts', {
         session_id: this.session_id, 
         prompt_text: this.searchQuery,
@@ -56,6 +57,7 @@ export default {
           console.log(response);
           this.$emit('loading');  
           this.searchQuery = "";
+          this.$emit('fetch'); 
         })
         .catch(error => {
           console.error(error);
