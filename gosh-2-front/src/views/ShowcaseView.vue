@@ -40,11 +40,11 @@
        
           </div>
   
-          <Paginator :rows="10" :totalRecords="120" :rowsPerPageOptions="[10, 20, 30]"></Paginator>
+          <Paginator v-model:page="currentPage" :rows="10" :totalRecords="120" :rowsPerPageOptions="[10, 20, 30]" @page="onPageChange"></Paginator>
         </div>
         <!-- <SiderBar ref="sidebar" @loading="toggleLoading" @fetched="handleFetchedCatalog" :searchQuery="this.searchQuery"></SiderBar> -->
       </div>
-      <InputArea @loading="toggleLoading" ref="inputArea" :session_id="sessionId"></InputArea>
+      <InputArea @leftAction="leftAction" @rightAction="rightAction" @loading="toggleLoading" ref="inputArea" :session_id="sessionId" :searchQuery="searchQuery" ></InputArea>
     </div>
   </template>
   
@@ -69,10 +69,13 @@
         totalRecords : Number, 
         rows : Number,
         sessionId: this.$route.params.id,
-        promptId: 8,        
+        promptId: -1,        
         loading: false,
-  
-  
+        pageNumber: 0,
+        no_obj: 10,
+        cur_li: 0,
+        searchQuery: "Search for the Open Source Project You Desire !"
+        ,
         products: [
           // Example JSON Data
           {
@@ -140,18 +143,41 @@
     },
     mounted(){
       this.fetchData();
+      this.updateToLatestPrompt();
     },
     created() {
       this.filteredProducts = this.products
     },
 
     methods: {
+      updateToLatestPrompt(){
+        const sessionId = this.$route.params.id;
+        axios.get(`http://188.130.155.83:8000/prompts?session_id=${sessionId}`)
+          .then(response => {
+            console.log(JSON.stringify(response.data));
+            this.prompts = response.data;
+            let n = this.prompts.length;
+            if(n != 0){
+              this.promptId = this.prompts[n-1].id;
+              console.log("Selected the following prompt id: ", this.promptId);
+            }
+          })
+          .catch(error => {
+            console.error('Error: Maybe out of bounds', error);
+            this.loading = false;
+          });
+      },
+
+      onPageChange(event) {
+      this.no_obj = event.rows;
+      this.cur_li = event.page;
+      this.fetchData();
+    } ,
       handleFetchedCatalog(productCatalog) {
         this.cataloging = productCatalog;
         console.log(JSON.stringify(this.cataloging))
       },
       toggleLoading(){
-          console.log("loading")
           this.loading = !this.loading
       },
       performSearch() {
@@ -170,12 +196,19 @@
           this.$refs.sidebar.sendFilterRequest();
       },
       fetchData() {
+        if(this.promptId == -1){
+          console.log("No Prompt has been issued yet");
+          return;
+        }
         const sessionId = this.$route.params.id; // Get session ID from route parameters
-        const promptId = this.promptId; // Get prompt ID from component data
+        const promptId = this.promptId;
+        console.log(this.cur_li);
+        
+        // Get prompt ID from component data
         this.loading = true;
         console.log(sessionId," ",promptId);
-
-        axios.get(`http://188.130.155.83:8000/repos/${sessionId}/${promptId}`)
+        let x = `?page_size=${this.no_obj}&page_no=${this.cur_li+1}`;
+        axios.get(`http://188.130.155.83:8000/repos/${sessionId}/${promptId}` + x)
           .then(response => {
             console.log(JSON.stringify(response.data));
             this.products = response.data;
@@ -188,6 +221,55 @@
             this.loading = false;
           });
       },
+      updatePage(i){
+        const sessionId = this.$route.params.id;
+        console.log("Sent request to: ", `http://188.130.155.83:8000/prompts/${sessionId}/${this.pageNumber + i}`);
+        axios.get(`http://188.130.155.83:8000/prompts/${sessionId}/${this.pageNumber + i}`)
+          .then(response => {
+            console.log(JSON.stringify(response.data));
+            this.prompt = response.data;
+            this.promptId = this.prompt.id;
+            this.fetchData();
+            console.log(prompt);
+          })
+          .catch(error => {
+            console.error('Error: Maybe out of bounds', error);
+            this.loading = false;
+          });
+      },
+      leftAction(){
+        const sessionId = parseInt(this.$route.params.id,10); // Get session ID from route parameters
+        const promptId = this.promptId;
+        axios.get(`http://188.130.155.83:8000/prompts/?prompt_id=${promptId}&session_id=${sessionId}`)
+          .then(response => {
+            console.log(JSON.stringify(response.data));
+            this.prompt = response.data;
+            this.pageNumber = this.prompt[0].position;
+            this.updatePage(-1);
+          })
+          .catch(error => {
+            console.error('Error Going left', error);
+            this.loading = false;
+          });
+      }
+      ,
+      rightAction(){
+        
+        const sessionId = parseInt(this.$route.params.id,10); // Get session ID from route parameters
+        const promptId = this.promptId; 
+        axios.get(`http://188.130.155.83:8000/prompts/?prompt_id=${promptId}&session_id=${sessionId}`)
+          .then(response => {
+            console.log(JSON.stringify(response.data));
+            this.prompt = response.data;
+            this.pageNumber = this.prompt[0].position;
+            this.updatePage(1);
+          })
+          .catch(error => {
+            console.error('Error Going right', error);
+            this.loading = false;
+          });
+      
+      }
       // async fetchData() {
       //         try {
       //             const response = await Axios.get(`http://91.107.124.108:5173/v1/home/star?limit=${this.limit}&page=${this.currentPage}`);

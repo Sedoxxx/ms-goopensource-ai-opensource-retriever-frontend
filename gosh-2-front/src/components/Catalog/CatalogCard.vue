@@ -93,6 +93,9 @@ export default {
     this.randomGif(); // Set an initial random gif on load
   },
   methods: {
+    goToRepo(){
+
+    },
     randomGif() {
       const randomIndex = Math.floor(Math.random() * this.gifs.length);
       this.selectedGif = this.gifs[randomIndex];
