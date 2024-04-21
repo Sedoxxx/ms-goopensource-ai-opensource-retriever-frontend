@@ -1,7 +1,8 @@
 
 <template>
     <div class="card">
-        <div class="carousel-title">Most Projects by Stars</div>
+        <div class="carousel-title plex-mono">  <i color="#fbbf24" class="icon-input pi pi-star-fill mr-2"></i>   TOP Repositories By Stars         <i color="#fbbf24" class="icon-input pi pi-star-fill mr-2"></i> </div>
+
         <Carousel :value="products" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions" circular :autoplayInterval="3000">
             <template  #item="slotProps">
                 <CatalogCard class="catalog-card"
@@ -182,6 +183,15 @@ export default {
 
 
 <style scoped>
+.plex-mono {
+    font-family: IBM Plex Mono;
+}
+
+.icon-input{
+    font-size: 1.5rem;
+    color: black !important;
+    margin-right: 0.5rem;
+}
 .carousel-title {
     color: #333; /* Dark text color for better readability */
     font-size: 2em; /* Large font size */
