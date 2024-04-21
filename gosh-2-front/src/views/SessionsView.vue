@@ -21,11 +21,10 @@
         </div>
 
       </header>
-      <div class="session-card-div">
         <div
         v-for="(session, index) in sessions"
         :key="session.id"
-        class="session-rectangle flex flex-row justify-content-between gap-0 "
+        class="session-rectangle flex flex-row justify-content-between gap-1 "
         @click="navigateToSession(session.id)"
 
       >
@@ -42,8 +41,6 @@
         </div>
       </div>
 
-      </div>
-
     </div>
   </div>
 </template>
@@ -54,7 +51,21 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      sessions: [],
+      sessions: [
+        {
+          id: 1,
+        },
+        {
+          id: 2,
+        },
+        {
+          id: 3,
+        },
+        {
+          id: 4,
+        },
+
+      ],
       selectedIndex: null, // initially no session is selected
       searchQuery: ''
     };
@@ -110,6 +121,7 @@ export default {
     background-color:rgba(0, 0, 0, 1);
     color: white !important;
     border: 4px solid rgba(0, 0, 0, 0.90);
+    border-radius: 100px;
     margin: 0px;
     padding: 30px 20px 30px 20px;
     display: flex;
@@ -117,7 +129,8 @@ export default {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    border-radius: 0px;
+    box-shadow: -5px 4px 3px rgba(0, 0, 0, 0.25);    
+
     transition: all 0.3s ease;
   }
   .session-rectangle span {
@@ -159,6 +172,7 @@ export default {
     background: transparent;
     color: rgba(0, 0, 0, 0.85) !important;
     border: 4px solid rgba(0, 0, 0, 0.85);
+    transform: translateX(10px);
   }
   .search-bar {
     position: relative;

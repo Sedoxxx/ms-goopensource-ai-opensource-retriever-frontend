@@ -94,7 +94,7 @@ export default {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 60vw;
+  width: 80vw;
   padding: 20px;
   background-color: rgba(255, 255, 255, 1);
   border-radius: 15px 15px 0 0;
