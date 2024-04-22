@@ -23,7 +23,7 @@
             <template #end>
                 <div class="flex align-items-center gap-2">
                     <!-- <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" class="mr-2"/> -->
-                    <Avatar image="../src/assets/images/aymen_header_2.jpg" shape="circle" class="mr-2"/>
+                    <Avatar image="src/assets/images/aymen_header_2.jpg" shape="circle" class="mr-2"/>
                 </div>
             </template>
         </Menubar>

@@ -52,12 +52,15 @@ export default {
         prompt_text: this.searchQuery,
         created_at: new Date().toISOString(),
         last_accessed: new Date().toISOString(),
+
+
     })
         .then(response => {
           console.log(response);
+          
           this.$emit('loading');  
           this.searchQuery = "";
-          this.$emit('fetch'); 
+          this.$emit('fetch',response.data.id); 
         })
         .catch(error => {
           console.error(error);
