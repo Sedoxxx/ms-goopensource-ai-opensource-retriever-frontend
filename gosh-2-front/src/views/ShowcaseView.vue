@@ -44,7 +44,7 @@
               <Skeleton width="28rem" height="30rem" class="mr-2"></Skeleton>
           </div>
   
-          <Paginator ref="paginator" v-model:page="currentPage" :rows="6" :totalRecords="size" :rowsPerPageOptions="[6, 12, 18]" @page="onPageChange"></Paginator>
+          <Paginator ref="paginator" v-model:page="currentPage" :rows="6" :totalRecords="120" :rowsPerPageOptions="[6, 12, 18]" @page="onPageChange"></Paginator>
         </div>
         <!-- <SiderBar ref="sidebar" @loading="toggleLoading" @fetched="handleFetchedCatalog" :searchQuery="this.searchQuery"></SiderBar> -->
       </div>
